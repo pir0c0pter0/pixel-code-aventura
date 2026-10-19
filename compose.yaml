@@ -1,0 +1,7 @@
+services:
+  pixel-code:
+    build: .
+    container_name: pixel-code
+    restart: unless-stopped
+    ports:
+      - "8080:80"

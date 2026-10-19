@@ -1,0 +1,20 @@
+{
+  "name": "pixel-code-aventura",
+  "private": true,
+  "version": "0.2.0-alpha.1",
+  "author": {
+    "name": "pir0c0pter0",
+    "email": "pir0c0pter0000@gmail.com",
+    "url": "https://github.com/pir0c0pter0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pir0c0pter0/pixel-code-aventura.git"
+  },
+  "description": "Jogo educacional em pixel art WebGL2 com robô e raposa animados, 20 fases de lógica e Blockly",
+  "scripts": {
+    "test": "node tests/curriculo.cjs",
+    "start": "python3 -m http.server 8080"
+  },
+  "license": "UNLICENSED"
+}

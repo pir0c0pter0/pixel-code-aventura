@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#10172c" />
+  <meta name="description" content="Pixel Code: uma aventura gratuita em pixel art para aprender lógica de programação, sequência, repetição e condições." />
+  <title>Pixel Code — A Aventura de Lumi</title>
+  <link rel="icon" href="assets/art/lumi.png" />
+  <link rel="stylesheet" href="style-test.css" />
+</head>
+<body>
+  <div class="ambient-stars" aria-hidden="true"></div>
+  <header class="topbar">
+    <button class="brand" id="homeBtn" aria-label="Voltar para início"><span class="brand-mark">▣</span> PIXEL<span>CODE</span><small>ACADEMIA DE AVENTURAS</small></button>
+    <div class="topright"><span class="top-progress" id="progressLabel">✦ 0/20 fases</span><button id="musicBtn" class="iconbtn" aria-label="Ativar/desativar música">♫</button><button id="helpBtn" class="iconbtn" aria-label="Como jogar">?</button></div>
+  </header>
+  <main>
+    <section id="homeView" class="view home-view">
+      <div class="hero-image"></div><div class="hero-shade"></div>
+      <div class="hero-content">
+        <div class="eyebrow"><span class="tiny-star">✦</span> UMA AVENTURA PARA PEQUENOS PROGRAMADORES</div>
+        <div class="hero-logo"><span class="pixel-symbol">{ }</span> PIXEL<br /><em>CODE</em></div>
+        <h1>A AVENTURA DE LUMI</h1>
+        <p>Um robozinho, um mundo misterioso e muitos desafios. Use bloquinhos de código para encontrar o caminho e aprender a pensar como um programador.</p>
+        <div class="hero-actions"><button class="btn primary jumbo" id="playBtn">▶ <span id="playBtnText">COMEÇAR AVENTURA</span></button><button class="btn secondary" id="worldBtn">▦ EXPLORAR MUNDOS</button></div>
+        <div class="features"><span>✦ 20 desafios</span><span>▧ Programação por blocos</span><span>♫ Músicas originais</span><span>♥ 100% em português</span></div>
+      </div>
+      <div class="hero-bottom"><span>APRENDA • EXPERIMENTE • CONQUISTE</span><span>FEITO PARA EXPLORADORES DE 6 A 12 ANOS</span></div>
+    </section>
+    <section id="worldView" class="view hidden world-view">
+      <div class="section-heading"><button id="worldBack" class="textbtn">← VOLTAR</button><span class="eyebrow">ESCOLHA SEU CAMINHO</span><h2>Quatro mundos. Uma grande missão.</h2><p>Conheça os segredos da programação enquanto ajuda Lumi a recuperar os cristais de energia.</p></div>
+      <div class="world-grid" id="worldGrid"></div><p class="world-note">★ Ganhe estrelas resolvendo desafios com programas menores. Seu progresso é salvo neste navegador.</p>
+    </section>
+    <section id="gameView" class="view hidden game-view">
+      <div class="game-heading"><button class="textbtn" id="gameBack">← MUNDOS</button><div class="level-head"><span class="eyebrow" id="levelWorld">MUNDO 1 • FLORESTA</span><h2 id="levelTitle">01 — O primeiro passo</h2></div><div class="head-stars" id="headStars">☆☆☆</div></div>
+      <div class="game-grid">
+        <section class="scene-panel"><div class="scene-bar"><span class="panel-label">▣ MISSÃO DE LUMI</span><span id="gemsCounter" class="gems-counter">◆ 0 / 0</span></div><div class="canvas-holder"><canvas id="gameCanvas" width="768" height="576" aria-label="Mapa da fase com robô, obstáculos e portal de saída"></canvas></div>
+        <div class="scene-footer"><div class="status-dot"></div><span id="gameStatus" role="status" aria-live="polite">Monte seu programa e aperte Executar!</span><div class="scene-controls"><button class="small-icon" id="slowBtn" title="Reduzir velocidade">−</button><span id="speedText">1×</span><button class="small-icon" id="fastBtn" title="Aumentar velocidade">+</button></div></div>
+        </section>
+        <aside class="editor-panel"><div class="editor-top"><div><div class="panel-label">▣ ESTÚDIO DE CÓDIGO</div><small>Organize os blocos e programe Lumi!</small></div><button class="textbtn clear-btn" id="clearBtn">⌫ LIMPAR</button></div>
+          <div class="lesson"><span class="lesson-icon">✦</span><div><strong id="lessonName">SEQUÊNCIA</strong><p id="lessonText">Os comandos são executados na ordem.</p></div><button class="hint-button" id="hintBtn" title="Ver dica">DICA ?</button></div>
+          <div id="blocklyEditor" class="blockly-editor" aria-label="Editor Blockly de programação por blocos"></div>
+          <div id="fallbackEditor" class="fallback-editor hidden"><p class="fallback-note">Editor simplificado disponível sem internet. Toque nos comandos para montar o programa.</p><div id="fallbackPalette" class="fallback-palette"></div><div id="fallbackProgram" class="fallback-program"></div></div>
+          <div class="code-actions"><button class="btn primary run-btn" id="runBtn">▶ EXECUTAR</button><button class="btn ghost" id="stepBtn">⏭ PASSO</button><button class="btn ghost" id="resetBtn">↺ REINICIAR</button></div>
+          <div class="editor-foot"><span id="blockCount">0 blocos utilizados</span><button class="textbtn" id="solutionBtn">VER EXEMPLO DE SOLUÇÃO</button></div>
+        </aside>
+      </div><div class="nav-bottom"><button class="textbtn" id="prevBtn">← FASE ANTERIOR</button><div class="nav-dots" id="navDots"></div><button class="textbtn" id="nextBtn">PRÓXIMA FASE →</button></div>
+    </section>
+  </main>
+  <div class="modal hidden" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-cover" id="modalCover"></div><div class="modal-card"><button class="modal-close" id="modalClose" aria-label="Fechar">✕</button><span class="eyebrow" id="modalEyebrow">DICA DE LUMI</span><div class="modal-art" id="modalArt">✦</div><h2 id="modalTitle">Você conseguiu!</h2><p id="modalText"></p><div id="modalStars" class="modal-stars"></div><div id="modalActions" class="modal-actions"></div></div></div>
+  <footer class="footer">PIXEL CODE • EDUCAÇÃO ATRAVÉS DA DIVERSÃO <span>FEITO COM ♥ E PIXELS • <a href="docs/LICENCAS.md" target="_blank">CRÉDITOS</a></span></footer>
+  <script src="game.js"></script>
+
+</body>
+</html>
