@@ -28,6 +28,7 @@ with sync_playwright() as p:
     assert page.locator('#playBtn').is_visible()
     page.screenshot(path=str(root/'preview-menu-v2.png'),full_page=True)
     page.locator('#playBtn').click()
+    page.get_by_role('button', name='PULAR TUTORIAL').click()
     page.wait_for_timeout(2800)
     gpu=page.evaluate('''() => ({available:!!gpu,ready:!!gpu?.ready,frame:gpu?.frame||0,offline:gpu?.offline,frames:Object.keys(gpu?.frames||{}).length,texture:gpu?.gl?.getParameter(gpu.gl.MAX_TEXTURE_SIZE)})''')
     print('RENDER:',gpu)

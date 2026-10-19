@@ -89,8 +89,22 @@ function loadCode(){let saved;try{saved=JSON.parse(localStorage.getItem(currentL
  updateBlockCount();}
 function loadLevel(index){if(index<0||index>=20)return;if(index>highestUnlocked()){showModal('🔒 Fase bloqueada','Conclua os desafios anteriores para desbloquear esta fase.','SUA JORNADA',[{label:'OK',action:closeModal}]);return}
  serial++;busy=false;currentLevel=index;runner=null;const l=LEVELS[index],w=WORLDS[l.world];$('levelWorld').textContent=`MUNDO ${l.world+1} • ${w.name.toUpperCase()}`;$('levelTitle').textContent=`${String(index+1).padStart(2,'0')} — ${l.name}`;$('headStars').textContent='★'.repeat(stars[index])+'☆'.repeat(3-stars[index]);$('lessonName').textContent=w.lesson;$('lessonText').textContent=l.intro;$('prevBtn').disabled=index<=0;$('nextBtn').disabled=index>=19||index>=highestUnlocked();$('prevBtn').style.opacity=index===0?'.4':'1';$('nextBtn').style.opacity=index>=highestUnlocked()?'.4':'1';$('navDots').innerHTML='';for(let i=0;i<5;i++){const dot=document.createElement('button');const idx=l.world*5+i;dot.className=`${currentLevel===idx?'active':''} ${stars[idx]?'done':''}`;dot.title=`Fase ${idx+1}`;dot.onclick=()=>loadLevel(idx);$('navDots').appendChild(dot)}
- $('firstLevelTutorial').classList.toggle('hidden',index!==0);$('firstLevelTutorial').open=stars[index]===0;
- resetState();showView('game');if(blocklyEditorSetup){if(blocklyWorkspace)refreshBlocklyToolbox();loadCode();}else if(blocklyFailed)loadCode();playMusic(w.theme);updateBlockCount();}
+ $('firstLevelTutorial').classList.toggle('hidden',index!==0);$('firstLevelTutorial').open=false;
+ resetState();showView('game');if(blocklyEditorSetup){if(blocklyWorkspace)refreshBlocklyToolbox();loadCode();}else if(blocklyFailed)loadCode();playMusic(w.theme);updateBlockCount();if(index===0)showTutorial();}
+function showTutorial(step=0){
+ const steps=$('firstLevelTutorial').querySelectorAll('li'),item=steps[step],last=step===steps.length-1;
+ showModal(item.querySelector('strong').textContent,item.querySelector('p').textContent,`COMO JOGAR · ${step+1} DE ${steps.length}`,[
+  {label:'PULAR TUTORIAL',action:closeModal},
+  ...(step>0?[{label:'VOLTAR',action:()=>showTutorial(step-1)}]:[]),
+  {label:last?'COMEÇAR A JOGAR':'PRÓXIMO →',primary:true,action:last?closeModal:()=>showTutorial(step+1)}
+ ],0,['🗺️','🧩','▶'][step]);
+ $('modalActions').querySelector('.primary').focus();
+}
+function restartAdventure(){
+ try{for(let i=0;i<LEVELS.length;i++)localStorage.removeItem(`pc-code-${i}`);localStorage.removeItem('pc-progress');}
+ catch(e){showModal('Não foi possível recomeçar','Não conseguimos apagar todos os dados salvos. Tente novamente.','RECOMEÇAR AVENTURA',[{label:'ENTENDI',action:closeModal}]);return;}
+ progress={};stars.fill(0);closeModal();loadLevel(0);
+}
 function updateGems(){let l=LEVELS[currentLevel];$('gemsCounter').textContent=`◆ ${l.gemTiles.length-(currentState?.crystals.size||0)} / ${l.gemTiles.length}`;}
 function setStatus(message){$('gameStatus').textContent=message;}
 function isAheadPassable(){const s=currentState,l=LEVELS[currentLevel],d=DIR_DELTA[s.dir],tx=s.x+d[0],ty=s.y+d[1];if(tx<0||ty<0||tx>=W||ty>=H)return false;if(!l.walkable.has(`${tx},${ty}`))return false;if(l.gateTile&&!s.activated&&tx===l.gateTile[0]&&ty===l.gateTile[1])return false;return true;}
@@ -245,6 +259,7 @@ function drawMap(time){if(scene!=='game'||!currentState){requestAnimationFrame(d
  requestAnimationFrame(drawMap);}
 requestAnimationFrame(drawMap);
 // Ligação de menus e botões
+$('restartBtn').onclick=()=>showModal('Recomeçar a aventura?','Isso vai apagar todas as estrelas e os programas salvos neste navegador. Você voltará à fase 1. Essa ação não pode ser desfeita.','UM NOVO COMEÇO',[{label:'CANCELAR',action:closeModal},{label:'APAGAR E RECOMEÇAR',primary:true,action:restartAdventure}],0,'↺');
 $('playBtn').onclick=()=>{sfx('clique');loadLevel(highestUnlocked())};$('worldBtn').onclick=()=>{sfx('clique');showView('world')};$('homeBtn').onclick=()=>{stopExecution();showView('home')};$('worldBack').onclick=()=>showView('home');$('gameBack').onclick=()=>{stopExecution();showView('world')};$('musicBtn').onclick=toggleMusic;$('helpBtn').onclick=()=>showModal('Como jogar','1. Escolha uma fase e observe o mapa.\n2. Arraste os blocos de código para a área de trabalho.\n3. Encaixe os comandos na ordem desejada.\n4. Aperte EXECUTAR ou PASSO para acompanhar Lumi.\n5. Colete os cristais e entre no portal para vencer!\n\nUm programa com menos blocos recebe mais estrelas.','GUIA DO EXPLORADOR',[{label:'VAMOS JOGAR!',primary:true,action:closeModal}],0,'🎮');
 $('runBtn').onclick=runProgram;$('stepBtn').onclick=stepProgram;$('resetBtn').onclick=resetProgram;
 $('clearBtn').onclick=()=>{stopExecution();if(blocklyWorkspace){blocklyWorkspace.clear();saveWorkspace()}else {fallbackRoot=[];fallbackTarget=fallbackRoot;onFallbackChange()}resetState();updateBlockCount()};

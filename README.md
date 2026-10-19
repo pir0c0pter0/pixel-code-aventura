@@ -36,7 +36,7 @@ Cada fase convida a observar, planejar, executar e corrigir. A dificuldade cresc
 | --- | --- |
 | **20 fases em quatro mundos** | Desafios progressivos, com desbloqueio conforme a aventura avança. |
 | **Programação visual** | Blocos para andar para cima, baixo, esquerda e direita, repetir e tomar decisões usando Blockly. |
-| **Tutorial na primeira fase** | Instruções curtas para observar o mapa, montar comandos e executar. |
+| **Tutorial na primeira fase** | Três popups com instruções para observar o mapa, montar comandos e executar, com opções de avançar, voltar ou pular. |
 | **Aprender testando** | Execução contínua, modo passo a passo, ajuste de velocidade, dicas e exemplos. |
 | **Estrelas e progresso** | Soluções com menos blocos recebem mais estrelas; progresso e programas ficam no navegador. |
 | **Pixel art animada** | Lumi e Faísca com animações, cenários, partículas e renderização WebGL2. |
@@ -85,6 +85,7 @@ docker compose down
 - O editor de arrastar e encaixar carrega **Blockly 12.5.1** pelo CDN jsDelivr. Se o carregamento falhar, o jogo oferece um editor simplificado de cliques.
 - Cenários, sprites, músicas e efeitos estão incluídos no projeto. As fontes Nunito e Press Start 2P vêm do Google Fonts, com fontes alternativas quando estiverem indisponíveis.
 - O progresso e os programas ficam em `localStorage`, no navegador usado para jogar. Não há conta nem sincronização entre aparelhos; limpar os dados do site remove esses registros.
+- **RECOMEÇAR AVENTURA**, no menu, pede confirmação para apagar as estrelas e os programas salvos e abrir a fase 1 com o tutorial.
 - Para distribuir o editor Blockly integralmente offline, disponibilize uma cópia local da biblioteca, ajuste a referência em `index.html` e preserve os avisos da dependência descritos em [licenças e créditos](docs/LICENCAS.md).
 
 ## Como jogar
