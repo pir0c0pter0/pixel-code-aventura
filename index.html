@@ -37,14 +37,14 @@
       <details id="firstLevelTutorial" class="first-level-tutorial hidden" open>
         <summary>COMO JOGAR · Tutorial da fase 1</summary>
         <ol>
-          <li><strong>Observe o caminho</strong><p>Lumi é o robô e já está olhando para a direita. Leve-o até o portal, pegando o cristal no caminho.</p></li>
-          <li><strong>Monte três passos</strong><p id="tutorialBlocks">Arraste três blocos “avançar” da lista para a área ao lado. Encaixe um embaixo do outro. No editor simplificado, toque em “Avançar” três vezes.</p></li>
+          <li><strong>Observe o caminho</strong><p>Lumi é o robô. Os comandos movem uma casa para cima, baixo, esquerda ou direita da tela. Leve-o até o portal, pegando o cristal no caminho.</p></li>
+          <li><strong>Monte três passos</strong><p id="tutorialBlocks">Arraste três blocos “andar para a direita” da lista para a área ao lado. Encaixe um embaixo do outro. No editor simplificado, toque em “Direita” três vezes.</p></li>
           <li><strong>Teste sua ideia</strong><p>Aperte <b>EXECUTAR</b> para ver Lumi andar. <b>PASSO</b> faz um comando por vez. Errou? Use <b>REINICIAR</b>, ajuste os blocos e tente de novo!</p></li>
         </ol>
-        <p class="tutorial-note">Cada “avançar” anda uma casa. Você pode fechar e reabrir este guia pelo título acima.</p>
+        <p class="tutorial-note">Cada bloco de direção anda uma casa. Você pode fechar e reabrir este guia pelo título acima.</p>
       </details>
       <div class="game-grid">
-        <section class="scene-panel"><div class="scene-bar"><span class="panel-label">▣ MISSÃO DE LUMI</span><span id="directionLabel" class="direction-label" aria-label="Direção de Lumi">▶ LESTE</span><span id="gemsCounter" class="gems-counter">◆ 0 / 0</span></div><div class="canvas-holder"><span class="render-badge" id="renderBadge" title="Renderização acelerada por hardware">WEBGL2 • GPU</span><canvas id="gameCanvas" width="768" height="576" aria-label="Mapa da fase com robô, obstáculos e portal de saída"></canvas></div>
+        <section class="scene-panel"><div class="scene-bar"><span class="panel-label">▣ MISSÃO DE LUMI</span><span id="directionLabel" class="direction-label" aria-label="Direção de Lumi">▶ DIREITA</span><span id="gemsCounter" class="gems-counter">◆ 0 / 0</span></div><div class="canvas-holder"><span class="render-badge" id="renderBadge" title="Renderização acelerada por hardware">WEBGL2 • GPU</span><canvas id="gameCanvas" width="768" height="576" aria-label="Mapa da fase com robô, obstáculos e portal de saída"></canvas></div>
         <div class="scene-footer"><div class="status-dot"></div><span id="gameStatus" role="status" aria-live="polite">Monte seu programa e aperte Executar!</span><div class="scene-controls"><button class="small-icon" id="slowBtn" title="Reduzir velocidade">−</button><span id="speedText">1×</span><button class="small-icon" id="fastBtn" title="Aumentar velocidade">+</button></div></div>
         </section>
         <aside class="editor-panel"><div class="editor-top"><div><div class="panel-label">▣ ESTÚDIO DE CÓDIGO</div><small>Organize os blocos e programe Lumi!</small></div><button class="textbtn clear-btn" id="clearBtn">⌫ LIMPAR</button></div>

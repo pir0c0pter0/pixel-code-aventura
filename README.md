@@ -35,7 +35,7 @@ Cada fase convida a observar, planejar, executar e corrigir. A dificuldade cresc
 | Recurso | Experiência |
 | --- | --- |
 | **20 fases em quatro mundos** | Desafios progressivos, com desbloqueio conforme a aventura avança. |
-| **Programação visual** | Blocos para avançar, virar, repetir e tomar decisões usando Blockly. |
+| **Programação visual** | Blocos para andar para cima, baixo, esquerda e direita, repetir e tomar decisões usando Blockly. |
 | **Tutorial na primeira fase** | Instruções curtas para observar o mapa, montar comandos e executar. |
 | **Aprender testando** | Execução contínua, modo passo a passo, ajuste de velocidade, dicas e exemplos. |
 | **Estrelas e progresso** | Soluções com menos blocos recebem mais estrelas; progresso e programas ficam no navegador. |

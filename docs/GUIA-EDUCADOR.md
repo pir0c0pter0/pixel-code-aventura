@@ -22,7 +22,7 @@ Introduzir **sequências, depuração, laços de repetição, condições e algo
 
 ## Avaliação formativa
 
-Uma resposta boa não é apenas completar: a criança deve conseguir explicar por que o robô virou, por que um laço reduz instruções e quando o bloco condicional executa ou não executa. Incentive comparar soluções sem enfatizar competição.
+Uma resposta boa não é apenas completar: a criança deve conseguir explicar por que o robô mudou de direção, por que um laço reduz instruções e quando o bloco condicional executa ou não executa. Incentive comparar soluções sem enfatizar competição.
 
 ## Segurança e privacidade
 

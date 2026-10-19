@@ -4,6 +4,7 @@
 const $ = id => document.getElementById(id);
 const W = 12, H = 8, TILE = 48, OX = 96, OY = 95;
 const DIRECTIONS = ['N','E','S','W'];
+const MOVE_DIRECTIONS = {move_up:'N',move_right:'E',move_down:'S',move_left:'W'};
 const DIR_DELTA = {N:[0,-1],E:[1,0],S:[0,1],W:[-1,0]};
 const WORLDS = [
   {name:'Floresta do Começo',theme:'floresta',icon:'🌳',emoji:'🌿',color:'#3d805e',concept:'Sequências',about:'Descubra como dar instruções na ordem certa.',lesson:'SEQUÊNCIA',description:'Os blocos são executados de cima para baixo, como uma receita.'},
@@ -12,25 +13,25 @@ const WORLDS = [
   {name:'Estação das Estrelas',theme:'cosmos',icon:'🚀',emoji:'🪐',color:'#49679c',concept:'Desafios finais',about:'Misture tudo e transforme ideias em soluções!',lesson:'ALGORITMOS',description:'Combine sequências, repetições e decisões para resolver problemas.'},
 ];
 const SEEDS = [
-  {name:'O primeiro passo',route:'EEE',start:[2,3],dir:'E',gems:[2],limit:3,intro:'Ajude Lumi a chegar ao portal! Use o bloco AVANÇAR três vezes.',hint:'Arraste o bloco azul “avançar” três vezes, conectando um embaixo do outro.',toolset:'basico'},
-  {name:'Uma curva no caminho',route:'EESS',start:[2,2],dir:'E',gems:[3],limit:5,intro:'O caminho fez uma curva. Para onde Lumi precisa olhar?',hint:'Avance duas casas, vire à direita para olhar para baixo e avance outras duas.',toolset:'basico'},
-  {name:'Agora à esquerda',route:'EENEE',start:[2,4],dir:'E',gems:[3],limit:7,intro:'Você já sabe virar à direita. Vamos aprender a virar à esquerda!',hint:'Avance duas vezes, vire à esquerda, avance, vire à direita e avance duas vezes.',toolset:'basico'},
+  {name:'O primeiro passo',route:'EEE',start:[2,3],dir:'E',gems:[2],limit:3,intro:'Ajude Lumi a chegar ao portal! Use o bloco DIREITA três vezes.',hint:'Arraste o bloco azul “andar para a direita” três vezes, conectando um embaixo do outro.',toolset:'basico'},
+  {name:'Uma curva no caminho',route:'EESS',start:[2,2],dir:'E',gems:[3],limit:5,intro:'O caminho fez uma curva. Em qual direção Lumi precisa andar?',hint:'Ande duas casas para a direita e duas para baixo.',toolset:'basico'},
+  {name:'Agora para cima',route:'EENEE',start:[2,4],dir:'E',gems:[3],limit:7,intro:'Você já sabe andar para baixo. Vamos aprender a andar para cima!',hint:'Ande duas casas para a direita, uma para cima e mais duas para a direita.',toolset:'basico'},
   {name:'Labirinto das folhas',route:'EEESSWWS',start:[2,2],dir:'E',gems:[2,6],limit:12,intro:'Planeje todas as curvas antes de apertar Executar.',hint:'Leia o mapa da esquerda para a direita; depois, desça e retorne pelo corredor de baixo.',toolset:'basico'},
-  {name:'Guardiã da floresta',route:'EENNEESSE',start:[2,4],dir:'E',gems:[3,7],limit:13,intro:'Junte tudo que aprendeu em uma sequência!',hint:'Faça duas casas para leste, duas ao norte, duas a leste, duas ao sul e uma a leste.',toolset:'basico'},
-  {name:'Passos repetidos',route:'EEEEE',start:[2,3],dir:'E',gems:[2,4],limit:2,intro:'Cinco passos iguais? Use uma repetição para economizar blocos.',hint:'Coloque “avançar” dentro de “repetir 5 vezes”.',toolset:'repetir'},
-  {name:'O grande L',route:'EEEESSSS',start:[2,1],dir:'E',gems:[3,6],limit:5,intro:'Você pode usar dois laços: um para cada corredor.',hint:'Repita 4 avanços; vire à direita; repita mais 4 avanços.',toolset:'repetir'},
-  {name:'Escadaria dourada',route:'EEEESSSE',start:[2,1],dir:'E',gems:[4,7],limit:7,intro:'A repetição funciona melhor nos trechos longos.',hint:'Repita 4 avanços, vire à direita, repita 3 avanços, vire à esquerda e avance.',toolset:'repetir'},
-  {name:'Caminho zigue-zague',route:'EEESSEEES',start:[1,2],dir:'E',gems:[2,5,8],limit:10,intro:'Grupos repetidos tornam seu programa mais simples.',hint:'Repita os três avanços; vire à direita para descer e vire à esquerda para voltar a leste.',toolset:'repetir'},
+  {name:'Guardiã da floresta',route:'EENNEESSE',start:[2,4],dir:'E',gems:[3,7],limit:13,intro:'Junte tudo que aprendeu em uma sequência!',hint:'Ande duas casas para a direita, duas para cima, duas para a direita, duas para baixo e uma para a direita.',toolset:'basico'},
+  {name:'Passos repetidos',route:'EEEEE',start:[2,3],dir:'E',gems:[2,4],limit:2,intro:'Cinco passos iguais? Use uma repetição para economizar blocos.',hint:'Coloque “andar para a direita” dentro de “repetir 5 vezes”.',toolset:'repetir'},
+  {name:'O grande L',route:'EEEESSSS',start:[2,1],dir:'E',gems:[3,6],limit:5,intro:'Você pode usar dois laços: um para cada corredor.',hint:'Repita 4 passos para a direita; depois, repita 4 passos para baixo.',toolset:'repetir'},
+  {name:'Escadaria dourada',route:'EEEESSSE',start:[2,1],dir:'E',gems:[4,7],limit:7,intro:'A repetição funciona melhor nos trechos longos.',hint:'Repita 4 passos para a direita, 3 passos para baixo e ande uma casa para a direita.',toolset:'repetir'},
+  {name:'Caminho zigue-zague',route:'EEESSEEES',start:[1,2],dir:'E',gems:[2,5,8],limit:10,intro:'Grupos repetidos tornam seu programa mais simples.',hint:'Ande 3 casas para a direita, 2 para baixo, 3 para a direita e uma para baixo. Use repetições nos trechos iguais.',toolset:'repetir'},
   {name:'A última duna',route:'EEEESSSWWEEE',start:[2,1],dir:'E',gems:[4,9,12],limit:12,intro:'Um algoritmo eficiente resolve até os caminhos mais longos.',hint:'Use repetições para cada trecho reto. Atenção: algumas curvas mudam o sentido!',toolset:'repetir'},
-  {name:'O portão adormecido',route:'EEEEEE',start:[2,3],dir:'E',gems:[2,5],switchAt:3,gateAt:5,limit:9,intro:'Uma porta bloqueia o caminho. Pare no botão dourado e use ATIVAR.',hint:'Avance três casas, ative o interruptor, depois continue até o portal.',toolset:'cond'},
+  {name:'O portão adormecido',route:'EEEEEE',start:[2,3],dir:'E',gems:[2,5],switchAt:3,gateAt:5,limit:9,intro:'Uma porta bloqueia o caminho. Pare no botão dourado e use ATIVAR.',hint:'Ande três casas para a direita, ative o interruptor e continue para a direita até o portal.',toolset:'cond'},
   {name:'O botão esquecido',route:'EEESSSEEE',start:[1,1],dir:'E',gems:[4,8],switchAt:4,gateAt:7,limit:14,intro:'Aprenda o bloco SE ESTOU NO BOTÃO para só ativar quando necessário.',hint:'Quando pisar na placa dourada, use “se estou no botão”, com “ativar” dentro.',toolset:'cond'},
   {name:'Porta das ametistas',route:'EEEENNEEEE',start:[1,4],dir:'E',gems:[3,7],switchAt:5,gateAt:8,limit:16,intro:'O interruptor abre uma porta em outro ponto do mapa.',hint:'O botão está depois da subida. Acione-o ANTES de atravessar a porta.',toolset:'cond'},
   {name:'O código das cavernas',route:'EESSEEEENNE',start:[1,2],dir:'E',gems:[3,8],switchAt:5,gateAt:9,limit:17,intro:'Use condições, curvas e repetições para seguir em frente.',hint:'Ative a placa quando estiver sobre ela; avance até o portão e faça a curva.',toolset:'cond'},
   {name:'Coração de cristal',route:'EEEESSEEE',start:[1,1],dir:'E',gems:[2,5,8],switchAt:4,gateAt:7,limit:15,intro:'Colete todas as gemas e abra a passagem para o próximo mundo!',hint:'A porta não abre sozinha: depois de quatro avanços, ative a placa.',toolset:'cond'},
-  {name:'Piloto automático',route:'EEEEE',start:[2,3],dir:'E',gems:[3],limit:2,intro:'Experimente REPETIR ATÉ O PORTAL para deixar Lumi continuar sozinho.',hint:'Coloque “avançar” dentro de “repetir até o portal”.',toolset:'final'},
+  {name:'Piloto automático',route:'EEEEE',start:[2,3],dir:'E',gems:[3],limit:2,intro:'Experimente REPETIR ATÉ O PORTAL para deixar Lumi continuar sozinho.',hint:'Coloque “andar para a direita” dentro de “repetir até o portal”.',toolset:'final'},
   {name:'Órbita de Lumi',route:'EEESSSEEEENNEE',start:[1,1],dir:'E',gems:[3,8,12],limit:14,intro:'Uma nova jornada: use tudo que já conhece.',hint:'Transforme os trechos retos em repetições e observe o sentido das curvas.',toolset:'final'},
   {name:'O mapa das estrelas',route:'EEEESSSSEENNN',start:[2,1],dir:'E',gems:[3,7,11],switchAt:6,gateAt:10,limit:17,intro:'Sua missão é ativar um interruptor antes de subir ao portal.',hint:'O botão está no corredor que desce. Ative antes de avançar para a porta.',toolset:'final'},
-  {name:'Poeira cósmica',route:'EEEESSSWWEEE',start:[2,1],dir:'E',gems:[2,6,10],limit:13,intro:'Programar é dividir um desafio grande em partes menores.',hint:'Conte os passos de cada segmento. Curvas para a esquerda também fazem parte da solução.',toolset:'final'},
+  {name:'Poeira cósmica',route:'EEEESSSWWEEE',start:[2,1],dir:'E',gems:[2,6,10],limit:13,intro:'Programar é dividir um desafio grande em partes menores.',hint:'Conte os passos de cada segmento. Passos para a esquerda também fazem parte da solução.',toolset:'final'},
   {name:'O núcleo do universo',route:'EEEEENNN EEEESSSS',start:[1,5],dir:'E',gems:[3,8,15],switchAt:7,gateAt:13,limit:19,intro:'Último desafio! Recupere o núcleo e conclua a aventura.',hint:'Combine laços e “se estou no botão” antes de atravessar a porta do núcleo.',toolset:'final'},
 ];
 function makeLevel(seed,i){
@@ -78,7 +79,7 @@ function drawWorlds(){const grid=$('worldGrid');grid.replaceChildren();WORLDS.fo
  card.addEventListener('click',()=>{if(!open){showModal('🔒 Mundo bloqueado','Termine as cinco fases do mundo anterior para continuar sua aventura.','CONTINUE SUA JORNADA',[{label:'ENTENDI',action:closeModal}]);return}let go=start;while(go<start+4&&stars[go]>0)go++;loadLevel(go)});
  grid.appendChild(card);
  });}
-function updateDirection(){const e={N:'▲ NORTE',E:'▶ LESTE',S:'▼ SUL',W:'◀ OESTE'};$('directionLabel').textContent=e[currentState?.dir]||'▶ LESTE';}
+function updateDirection(){const e={N:'▲ CIMA',E:'▶ DIREITA',S:'▼ BAIXO',W:'◀ ESQUERDA'};$('directionLabel').textContent=e[currentState?.dir]||'▶ DIREITA';}
 function resetState(){let level=LEVELS[currentLevel];currentState={x:level.start[0],y:level.start[1],dir:level.dir,crystals:new Set(level.gemTiles.map(a=>a.join(','))),activated:false,finished:false,steps:0,moves:0,lastMoveAt:0,lastActivateAt:0}; if(level.gateTile){} setStatus('Monte seu programa e aperte Executar!');updateGems();updateDirection();}
 function currentLevelKey(){return`pc-code-${currentLevel}`}
 function saveWorkspace(){try{if(blocklyWorkspace&&window.Blockly){localStorage.setItem(currentLevelKey(),JSON.stringify({engine:'blockly',data:Blockly.serialization.workspaces.save(blocklyWorkspace)}));}else if(blocklyFailed){localStorage.setItem(currentLevelKey(),JSON.stringify({engine:'fallback',data:fallbackRoot}));}}catch(e){}}
@@ -95,7 +96,7 @@ function setStatus(message){$('gameStatus').textContent=message;}
 function isAheadPassable(){const s=currentState,l=LEVELS[currentLevel],d=DIR_DELTA[s.dir],tx=s.x+d[0],ty=s.y+d[1];if(tx<0||ty<0||tx>=W||ty>=H)return false;if(!l.walkable.has(`${tx},${ty}`))return false;if(l.gateTile&&!s.activated&&tx===l.gateTile[0]&&ty===l.gateTile[1])return false;return true;}
 function isOnSwitch(){const l=LEVELS[currentLevel],s=currentState;return!!l.switchTile&&l.switchTile[0]===s.x&&l.switchTile[1]===s.y}
 function atGoal(){const l=LEVELS[currentLevel],s=currentState;return s.x===l.goal[0]&&s.y===l.goal[1]&&s.crystals.size===0}
-function handleAction(action){const s=currentState;if(action.kind==='move'){
+function handleAction(action){const s=currentState;const direction=MOVE_DIRECTIONS[action.kind];if(direction){s.dir=direction;updateDirection()}if(action.kind==='move'||direction){
  if(!isAheadPassable()) {sfx('erro');setStatus('💥 Lumi bateu em um obstáculo. Reveja a ordem dos comandos!');return false;}
  const [dx,dy]=DIR_DELTA[s.dir];s.x+=dx;s.y+=dy;s.moves++;s.lastMoveAt=Date.now();sfx('passo');const key=`${s.x},${s.y}`;
  if(s.crystals.has(key)){s.crystals.delete(key);sfx('gema');setStatus('◆ Cristal coletado! Continue!');updateGems()}else setStatus(`✓ Passo ${++s.steps}: Lumi avançou uma casa.`);
@@ -115,7 +116,7 @@ function showModal(title,text,eyebrow,actions,starsCount=0,art='✦'){
  }
 // O motor executa AST em vez de avaliar JavaScript arbitrário de crianças.
 function* executeTree(nodes,counter){for(const node of nodes){if(counter.calls++>500)throw Error('Limite de execução atingido (500 comandos).');
- if(['move','left','right','activate'].includes(node.kind))yield node;
+ if(MOVE_DIRECTIONS[node.kind]||['move','left','right','activate'].includes(node.kind))yield node;
  else if(node.kind==='repeat'){for(let i=0;i<Number(node.times||2);i++)yield* executeTree(node.children||[],counter)}
  else if(node.kind==='until'){let limit=0;while(!atGoal()&&limit++<100)yield* executeTree(node.children||[],counter);if(limit>=100)throw Error('Repetição infinita: verifique o caminho.')}
  else if(node.kind==='ifpath'){yield* executeTree(isAheadPassable()?node.children||[]:node.elseChildren||[],counter)}
@@ -139,24 +140,29 @@ function stopExecution(){serial++;runner=null;busy=false;$('runBtn').disabled=fa
 function resetProgram(){stopExecution();resetState();sfx('clique')}
 // Editor Blockly: biblioteca de programação visual existente, Apache-2.0.
 const BLOCK_DEFS=[
+ {type:'lumi_move_right',message0:'→ andar para a direita',previousStatement:null,nextStatement:null,colour:'#3293c5',tooltip:'Lumi anda uma casa para a direita da tela.'},
+ {type:'lumi_move_left',message0:'← andar para a esquerda',previousStatement:null,nextStatement:null,colour:'#3293c5',tooltip:'Lumi anda uma casa para a esquerda da tela.'},
+ {type:'lumi_move_up',message0:'↑ andar para cima',previousStatement:null,nextStatement:null,colour:'#3293c5',tooltip:'Lumi anda uma casa para cima na tela.'},
+ {type:'lumi_move_down',message0:'↓ andar para baixo',previousStatement:null,nextStatement:null,colour:'#3293c5',tooltip:'Lumi anda uma casa para baixo na tela.'},
+ // Blocos antigos permanecem disponíveis para carregar programas já salvos.
  {type:'lumi_move',message0:'➡️ avançar',previousStatement:null,nextStatement:null,colour:'#3293c5',tooltip:'Lumi anda uma casa para a frente.'},
  {type:'lumi_left',message0:'↶ virar à esquerda',previousStatement:null,nextStatement:null,colour:'#3293c5',tooltip:'Lumi gira 90 graus para a esquerda.'},
  {type:'lumi_right',message0:'↷ virar à direita',previousStatement:null,nextStatement:null,colour:'#3293c5',tooltip:'Lumi gira 90 graus para a direita.'},
  {type:'lumi_repeat',message0:'🔁 repetir %1 vezes %2 %3',args0:[{type:'field_dropdown',name:'TIMES',options:[['2','2'],['3','3'],['4','4'],['5','5'],['6','6']]},{type:'input_dummy'},{type:'input_statement',name:'DO'}],previousStatement:null,nextStatement:null,colour:'#df983f',tooltip:'Repete os blocos encaixados de 2 a 6 vezes.'},
- {type:'lumi_ifpath',message0:'❔ se caminho livre %1 então %2 senão %3',args0:[{type:'input_dummy'},{type:'input_statement',name:'DO'},{type:'input_statement',name:'ELSE'}],previousStatement:null,nextStatement:null,colour:'#936bc1',tooltip:'Testa se é possível avançar; escolha o que fazer se for ou não.'},
+ {type:'lumi_ifpath',message0:'❔ se caminho livre %1 então %2 senão %3',args0:[{type:'input_dummy'},{type:'input_statement',name:'DO'},{type:'input_statement',name:'ELSE'}],previousStatement:null,nextStatement:null,colour:'#936bc1',tooltip:'Testa o caminho na direção indicada acima do mapa (a do último movimento).'},
  {type:'lumi_ifswitch',message0:'❔ se estou no botão %1 então %2',args0:[{type:'input_dummy'},{type:'input_statement',name:'DO'}],previousStatement:null,nextStatement:null,colour:'#936bc1',tooltip:'Executa os blocos se Lumi estiver sobre a placa amarela.'},
  {type:'lumi_activate',message0:'⚡ ativar interruptor',previousStatement:null,nextStatement:null,colour:'#ce6c9c',tooltip:'Abre o portão enquanto Lumi está na placa.'},
  {type:'lumi_until',message0:'⭐ repetir até chegar %1 %2',args0:[{type:'input_dummy'},{type:'input_statement',name:'DO'}],previousStatement:null,nextStatement:null,colour:'#dc9850',tooltip:'Repete os blocos até Lumi alcançar o portal com todos os cristais.'}
 ];
-function blockTypes(){let set=SEEDS[currentLevel].toolset;let basics=['lumi_move','lumi_left','lumi_right'];if(set==='basico')return basics;if(set==='repetir')return [...basics,'lumi_repeat'];if(set==='cond')return [...basics,'lumi_repeat','lumi_ifswitch','lumi_ifpath','lumi_activate'];return [...basics,'lumi_repeat','lumi_until','lumi_ifswitch','lumi_ifpath','lumi_activate'];}
+function blockTypes(){let set=SEEDS[currentLevel].toolset;let basics=['lumi_move_right','lumi_move_left','lumi_move_up','lumi_move_down'];if(set==='basico')return basics;if(set==='repetir')return [...basics,'lumi_repeat'];if(set==='cond')return [...basics,'lumi_repeat','lumi_ifswitch','lumi_ifpath','lumi_activate'];return [...basics,'lumi_repeat','lumi_until','lumi_ifswitch','lumi_ifpath','lumi_activate'];}
 function toolbox(){return {kind:'flyoutToolbox',contents:blockTypes().map(type=>({kind:'block',type}))}}
 function refreshBlocklyToolbox(){if(blocklyWorkspace)blocklyWorkspace.updateToolbox(toolbox());}
 function resizeBlockly(){if(blocklyWorkspace)try{Blockly.svgResize(blocklyWorkspace)}catch(e){}}
-window.blocklyReady=function(){if(blocklyEditorSetup||!window.Blockly)return;try{Blockly.defineBlocksWithJsonArray(BLOCK_DEFS);blocklyWorkspace=Blockly.inject('blocklyEditor',{toolbox:toolbox(),renderer:'zelos',theme:Blockly.Themes.Classic,trashcan:true,scrollbars:true,move:{scrollbars:true,drag:true,wheel:true},zoom:{controls:true,wheel:false,startScale:.83,maxScale:1.45,minScale:.5,scaleSpeed:1.12},grid:{spacing:20,length:3,colour:'#d5e1e6',snap:false},sounds:false});blocklyWorkspace.addChangeListener(e=>{if(e.type===Blockly.Events.UI)return;stopExecution();updateBlockCount();saveWorkspace();});blocklyEditorSetup=true;blocklyFailed=false;$('tutorialBlocks').textContent='Arraste três blocos “avançar” da lista para a área ao lado. Encaixe um embaixo do outro, de cima para baixo.';$('fallbackEditor').classList.add('hidden');$('blocklyEditor').classList.remove('hidden');if(scene==='game')loadCode();resizeBlockly();}catch(err){console.error('Blockly init',err);window.blocklyFailed();}}
-window.blocklyFailed=function(){if(blocklyEditorSetup)return;blocklyFailed=true;$('tutorialBlocks').textContent='Toque em “Avançar” três vezes na lista de comandos. Eles aparecem em SEU PROGRAMA, na ordem em que Lumi vai andar.';$('blocklyEditor').classList.add('hidden');$('fallbackEditor').classList.remove('hidden');renderFallback();if(scene==='game')loadCode();};
+window.blocklyReady=function(){if(blocklyEditorSetup||!window.Blockly)return;try{Blockly.defineBlocksWithJsonArray(BLOCK_DEFS);blocklyWorkspace=Blockly.inject('blocklyEditor',{toolbox:toolbox(),renderer:'zelos',theme:Blockly.Themes.Classic,trashcan:true,scrollbars:true,move:{scrollbars:true,drag:true,wheel:true},zoom:{controls:true,wheel:false,startScale:.83,maxScale:1.45,minScale:.5,scaleSpeed:1.12},grid:{spacing:20,length:3,colour:'#d5e1e6',snap:false},sounds:false});blocklyWorkspace.addChangeListener(e=>{if(e.type===Blockly.Events.UI)return;stopExecution();updateBlockCount();saveWorkspace();});blocklyEditorSetup=true;blocklyFailed=false;$('tutorialBlocks').textContent='Arraste três blocos “andar para a direita” da lista para a área ao lado. Encaixe um embaixo do outro, de cima para baixo.';$('fallbackEditor').classList.add('hidden');$('blocklyEditor').classList.remove('hidden');if(scene==='game')loadCode();resizeBlockly();}catch(err){console.error('Blockly init',err);window.blocklyFailed();}}
+window.blocklyFailed=function(){if(blocklyEditorSetup)return;blocklyFailed=true;$('tutorialBlocks').textContent='Toque em “Direita” três vezes na lista de comandos. Eles aparecem em SEU PROGRAMA, na ordem em que Lumi vai andar.';$('blocklyEditor').classList.add('hidden');$('fallbackEditor').classList.remove('hidden');renderFallback();if(scene==='game')loadCode();};
 setTimeout(()=>{if(!blocklyEditorSetup)window.blocklyFailed()},7000);
 // Editor de contingência: funciona mesmo sem CDN/internet. Editor de comandos clicáveis, com aninhamento.
-const LABELS={move:'➡️ Avançar',left:'↶ Esquerda',right:'↷ Direita',repeat:'🔁 Repetir',until:'⭐ Até o portal',ifpath:'❔ Se caminho livre',ifswitch:'❔ Se no botão',activate:'⚡ Ativar'};
+const LABELS={move_right:'→ Direita',move_left:'← Esquerda',move_up:'↑ Cima',move_down:'↓ Baixo',move:'➡️ Avançar',left:'↶ Girar à esquerda',right:'↷ Girar à direita',repeat:'🔁 Repetir',until:'⭐ Até o portal',ifpath:'❔ Se caminho livre',ifswitch:'❔ Se no botão',activate:'⚡ Ativar'};
 function renderFallback(){if(!blocklyFailed||blocklyEditorSetup)return;let palette=$('fallbackPalette');palette.replaceChildren();let types=blockTypes().map(x=>x.replace('lumi_',''));
  for(const type of types){let btn=document.createElement('button');btn.className='palette-block';btn.textContent=LABELS[type];btn.onclick=()=>{if(!fallbackTarget)fallbackTarget=fallbackRoot;let n={kind:type};if(type==='repeat'){n.times=3;n.children=[]}if(['until','ifpath','ifswitch'].includes(type))n.children=[];if(type==='ifpath')n.elseChildren=[];fallbackTarget.push(n);onFallbackChange()};palette.appendChild(btn)}
  const root=$('fallbackProgram');root.replaceChildren();let title=document.createElement('strong');title.textContent='SEU PROGRAMA';title.style.fontSize='11px';root.appendChild(title);renderFallbackNodes(fallbackRoot,root,0);if(!fallbackRoot.length){let hint=document.createElement('p');hint.textContent='Clique nos blocos acima para começar.';hint.style.cssText='font-size:12px;color:#617388';root.appendChild(hint)}
@@ -172,13 +178,13 @@ function renderFallbackNodes(nodes,into,depth){if(depth>9)return;nodes.forEach((
  });}
 function onFallbackChange(){stopExecution();renderFallback();saveWorkspace();}
 // Geração de solução demonstrativa, baseada na rota declarativa de cada fase.
-function sampleSolution(){const l=LEVELS[currentLevel];let orient=l.dir;let dirs=l.route.split('');const ast=[];let index=0;
- function pushMove(count){if(count<=0)return;if(count>=3&&l.toolset!=='basico'){let remaining=count;while(remaining>0){let n=Math.min(6,remaining);if(n>=3)ast.push({kind:'repeat',times:n,children:[{kind:'move'}]});else for(let i=0;i<n;i++)ast.push({kind:'move'});remaining-=n}}else for(let i=0;i<count;i++)ast.push({kind:'move'})}
- while(index<dirs.length){const goalDir=dirs[index];let diff=(DIRECTIONS.indexOf(goalDir)-DIRECTIONS.indexOf(orient)+4)%4;if(diff===1){ast.push({kind:'right'});orient=goalDir}else if(diff===3){ast.push({kind:'left'});orient=goalDir}else if(diff===2){ast.push({kind:'right'},{kind:'right'});orient=goalDir}
+function sampleSolution(){const l=LEVELS[currentLevel];let dirs=l.route.split('');const ast=[];let index=0;
+ function pushMove(count,direction){const kind={N:'move_up',E:'move_right',S:'move_down',W:'move_left'}[direction];if(count<=0)return;if(count>=3&&l.toolset!=='basico'){let remaining=count;while(remaining>0){let n=Math.min(6,remaining);if(n>=3)ast.push({kind:'repeat',times:n,children:[{kind}]});else for(let i=0;i<n;i++)ast.push({kind});remaining-=n}}else for(let i=0;i<count;i++)ast.push({kind})}
+ while(index<dirs.length){const goalDir=dirs[index];
  let count=0;while(index<dirs.length&&dirs[index]===goalDir){index++;count++}
  // Interruptor está na casa do percurso index=switchAt: dividir trechos quando necessário.
  const startIndex=index-count,sw=l.switchAt;
- if(sw&&startIndex<sw&&sw<=index){pushMove(sw-startIndex); if(l.toolset==='cond'||l.toolset==='final')ast.push({kind:'ifswitch',children:[{kind:'activate'}]});else ast.push({kind:'activate'});pushMove(index-sw)}else {pushMove(count);if(sw&&index===sw)ast.push({kind:'ifswitch',children:[{kind:'activate'}]})}
+ if(sw&&startIndex<sw&&sw<=index){pushMove(sw-startIndex,goalDir); if(l.toolset==='cond'||l.toolset==='final')ast.push({kind:'ifswitch',children:[{kind:'activate'}]});else ast.push({kind:'activate'});pushMove(index-sw,goalDir)}else {pushMove(count,goalDir);if(sw&&index===sw)ast.push({kind:'ifswitch',children:[{kind:'activate'}]})}
  }
  return ast;}
 function createBlocklyBlock(n){let t='lumi_'+n.kind;let b=blocklyWorkspace.newBlock(t);if(n.kind==='repeat')b.setFieldValue(String(n.times||3),'TIMES');b.initSvg();b.render();if(n.children?.length){let child=createBlockChain(n.children);b.getInput('DO')?.connection.connect(child.previousConnection)}if(n.elseChildren?.length){let child=createBlockChain(n.elseChildren);b.getInput('ELSE')?.connection.connect(child.previousConnection)}return b;}
