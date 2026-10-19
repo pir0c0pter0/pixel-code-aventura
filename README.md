@@ -10,10 +10,7 @@
 
 Um robô, uma raposa e 20 desafios para transformar ideias em comandos.
 
-[![Versão alpha](https://img.shields.io/badge/vers%C3%A3o-0.2.0--alpha.1-ffcf70?style=flat-square)](https://github.com/pir0c0pter0/pixel-code-aventura/releases/tag/v0.2.0-alpha.1)
-![Idioma](https://img.shields.io/badge/idioma-pt--BR-74eadf?style=flat-square)
-![Fases](https://img.shields.io/badge/aventura-20_fases-74eadf?style=flat-square)
-![Renderização](https://img.shields.io/badge/render-WebGL2_%2B_Canvas_2D-9ab6ff?style=flat-square)
+[![Versão alpha](https://img.shields.io/badge/vers%C3%A3o-0.2.0--alpha.1-ffcf70?style=flat-square)](https://github.com/pir0c0pter0/pixel-code-aventura/releases/tag/v0.2.0-alpha.1) ![Idioma](https://img.shields.io/badge/idioma-pt--BR-74eadf?style=flat-square) ![Fases](https://img.shields.io/badge/aventura-20_fases-74eadf?style=flat-square) ![Renderização](https://img.shields.io/badge/render-WebGL2_%2B_Canvas_2D-9ab6ff?style=flat-square)
 
 [Começar a jogar](#começar-a-jogar) · [Como funciona](#como-jogar) · [Galeria](#galeria) · [Reportar um problema](https://github.com/pir0c0pter0/pixel-code-aventura/issues)
 
