@@ -132,7 +132,7 @@ Para atividades acompanhadas, o [guia do educador](docs/GUIA-EDUCADOR.md) traz u
 
 </details>
 
-<sub>Capturas reais da versão alpha, feitas no Chromium. A aparência pode variar conforme o navegador e o dispositivo.</sub>
+<sub>Capturas reais da versão alpha, atualizadas após a revisão dos recortes de Lumi, Faísca e do cenário. Feitas no Chromium; a aparência pode variar conforme o navegador e o dispositivo.</sub>
 
 ## Por dentro do projeto
 
@@ -169,6 +169,14 @@ npm test
 ```
 
 Verifica as rotas e executa uma solução vencedora para cada uma das 20 fases.
+
+**Assets — requer Python 3 e Pillow:**
+
+```bash
+python3 tests/assets.py
+```
+
+Regenera os assets e verifica os 68 quadros dos personagens contra a arte original, detectando partes cortadas e fragmentos de vizinhos. Confere também os 100 itens do atlas, os metadados, os retratos e as faixas de animação do menu.
 
 **Interface — requer Playwright, Chromium e o servidor local em execução:**
 
